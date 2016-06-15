@@ -164,7 +164,7 @@ var TokenField = React.createClass( {
 				tooltip={ token.tooltip }
 				displayTransform={ this.props.displayTransform }
 				onClickRemove={ this._onTokenClickRemove }
-				isBorderless={ this.props.isBorderless }
+				isBorderless={ token.isBorderless || this.props.isBorderless }
 				onMouseEnter={ token.onMouseEnter }
 				onMouseLeave={ token.onMouseLeave }
 				disabled={ 'error' !== status && this.props.disabled } />
