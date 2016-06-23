@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
+import find from 'lodash/find';
 import get from 'lodash/get';
 import identity from 'lodash/identity';
+import map from 'lodash/map';
 import { connect } from 'react-redux';
 
 import SegmentedControl from 'components/segmented-control';
@@ -9,6 +11,7 @@ import { localize } from 'i18n-calypso';
 
 import {
 	rawToNative,
+	nativePlaceholder,
 	nativeToRaw,
 	nativeToTokens,
 	tokensToNative
@@ -40,8 +43,7 @@ const tokenMap = {
 };
 
 const displayTokens = translate => s => {
-	const display = get( validTokens( translate ), s, s );
-	console.log( `${ s } => ${ display }` );
+	const display = find( validTokens( translate ), s ) || s;
 
 	return display;
 };
@@ -72,7 +74,17 @@ export class MetaTitleEditor extends Component {
 		const n2t = nativeToTokens;
 		const t2n = tokensToNative;
 
-		debugger;
+		const ts = validTokens( identity );
+		console.log( ts );
+		rawValues.forEach( v => {
+			console.log( v );
+
+			map( ts, (k, s) => {
+				if ( s !== v ) { return; }
+
+				console.log( `key found at ${ k }` );
+			} );
+		} );
 
 		//this.setState( { tokens } );
 	}
@@ -94,8 +106,11 @@ export class MetaTitleEditor extends Component {
 					disabled={ disabled }
 					displayTransform={ displayTokens( translate ) }
 					onChange={ this.update }
-					suggestions={ [ 'postTitle', 'siteName' ] }
-					value={ tokens }
+					suggestions={ [
+						translate( 'Site Name' ),
+						translate( 'Post Title' )
+					] }
+					value={ nativeToTokens( rawToNative( '%site_name% | %post_title%' ) ) }
 				/>
 			</div>
 		);
