@@ -13,7 +13,7 @@ import RootChild from 'components/root-child';
 export default React.createClass( {
 	getInitialState() {
 		return {
-			renderChildren: true
+			shouldRenderChildren: true
 		};
 	},
 
@@ -49,7 +49,7 @@ export default React.createClass( {
 
 		return (
 			<RootChild className={ classes }>
-				{ this.state.renderChildren && (
+				{ this.state.shouldRenderChildren && (
 					<div className="first-view__content">
 						<div>
 							{ this.props.children }
@@ -76,7 +76,7 @@ export default React.createClass( {
 	},
 
 	removeChildren: function() {
-		this.setState( { renderChildren: false } );
+		this.setState( { shouldRenderChildren: false } );
 	},
 
 	preventPageScrolling: function() {
