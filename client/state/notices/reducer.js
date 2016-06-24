@@ -2,6 +2,8 @@
  * External dependencies
  */
 import { combineReducers } from 'redux';
+import omit from 'lodash/omit';
+import reduce from 'lodash/reduce';
 
 /**
  * Internal dependencies
@@ -9,32 +11,45 @@ import { combineReducers } from 'redux';
 import {
 	NEW_NOTICE,
 	REMOVE_NOTICE,
-	SET_ROUTE,
-	SERIALIZE,
-	DESERIALIZE
+	SET_ROUTE
 } from 'state/action-types';
+import { createReducer } from 'state/utils';
 
-export function items( state = [], action ) {
-	switch ( action.type ) {
-		case NEW_NOTICE:
-			return [ action.notice, ...state ];
-		case REMOVE_NOTICE:
-			return state.filter( ( notice ) => ( notice.noticeId !== action.noticeId ) );
-		case SET_ROUTE:
-			return state.filter( notice => {
-				const show = notice.isPersistent || notice.displayOnNextPage;
-				if ( notice.displayOnNextPage ) {
-					notice.displayOnNextPage = false;
-				}
-				return show;
-			} );
-		case SERIALIZE:
-			return [];
-		case DESERIALIZE:
-			return [];
+export const items = createReducer( {}, {
+	[ NEW_NOTICE ]: ( state, action ) => {
+		const { notice } = action;
+		return {
+			...state,
+			[ notice.noticeId ]: notice
+		};
+	},
+	[ REMOVE_NOTICE ]: ( state, action ) => {
+		const { noticeId } = action;
+		if ( ! state.hasOwnProperty( noticeId ) ) {
+			return state;
+		}
+
+		return omit( state, noticeId );
+	},
+	[ SET_ROUTE ]: ( state ) => {
+		return reduce( state, ( memo, notice, noticeId ) => {
+			if ( ! notice.isPersistent && ! notice.displayOnNextPage ) {
+				return memo;
+			}
+
+			let nextNotice = notice;
+			if ( nextNotice.displayOnNextPage ) {
+				nextNotice = {
+					...nextNotice,
+					displayOnNextPage: false
+				};
+			}
+
+			memo[ noticeId ] = nextNotice;
+			return memo;
+		}, {} );
 	}
-	return state;
-}
+} );
 
 export default combineReducers( {
 	items
