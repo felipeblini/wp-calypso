@@ -5,7 +5,6 @@
  */
 import React from 'react';
 import i18n from 'i18n-calypso';
-import { personalPlan } from './personal-plan';
 
 // plans constants
 export const PLAN_BUSINESS = 'business-bundle';
@@ -61,9 +60,6 @@ export const plansList = {
 	},
 
 	[ PLAN_PERSONAL ]: {
-		getTitle: () => personalPlan.product_name_short,
-		getProductId: () => personalPlan.product_id,
-		getDescription: () => personalPlan.description,
 		getStoreSlug: () => PLAN_PERSONAL,
 		getPathSlug: () => 'personal'
 	},
