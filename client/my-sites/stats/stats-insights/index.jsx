@@ -126,7 +126,7 @@ export default React.createClass( {
 
 		if ( config.isEnabled( 'stats/first-view' ) ) {
 			return (
-				<FirstViewable firstViewActive={ this.state.firstViewActive } onFirstViewDismiss={ this.onFirstViewDismiss }>
+				<FirstViewable firstViewActive={ this.state.firstViewActive } onFirstViewDismiss={ this.dismissFirstView }>
 					<FirstView />
 					<SidebarNavigation />
 					<StatsNavigation section="insights" site={ site } />
@@ -144,7 +144,7 @@ export default React.createClass( {
 		);
 	},
 
-	onFirstViewDismiss() {
+	dismissFirstView() {
 		this.setState( {
 			firstViewActive: false
 		} );
