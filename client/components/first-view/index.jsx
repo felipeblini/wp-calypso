@@ -44,7 +44,7 @@ export default React.createClass( {
 
 	render: function() {
 		const classes = classNames( 'wp-content', 'first-view', {
-			active: this.props.isFirstViewActive
+			'is-active': this.props.isFirstViewActive
 		} );
 
 		return (

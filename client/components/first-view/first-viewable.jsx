@@ -27,7 +27,7 @@ export default React.createClass( {
 	render() {
 		const children = this.cloneChildrenAndSetupFirstViewProps();
 		const classes = classNames( 'first-viewable', {
-			'first-view-active': this.state.isFirstViewActive
+			'is-first-view-active': this.state.isFirstViewActive
 		} );
 
 		return (
