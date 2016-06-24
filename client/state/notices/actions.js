@@ -7,15 +7,15 @@ import uniqueId from 'lodash/uniqueId';
  * Internal dependencies
  */
 import {
-	NEW_NOTICE,
-	REMOVE_NOTICE,
+	NOTICE_CREATE,
+	NOTICE_REMOVE,
 	SET_ROUTE
 } from 'state/action-types';
 
 export function removeNotice( noticeId ) {
 	return {
 		noticeId: noticeId,
-		type: REMOVE_NOTICE
+		type: NOTICE_REMOVE
 	};
 }
 
@@ -31,7 +31,7 @@ export function createNotice( status, text, options = {} ) {
 	};
 
 	return {
-		type: NEW_NOTICE,
+		type: NOTICE_CREATE,
 		notice: notice
 	};
 }

@@ -9,21 +9,21 @@ import reduce from 'lodash/reduce';
  * Internal dependencies
  */
 import {
-	NEW_NOTICE,
-	REMOVE_NOTICE,
 	SET_ROUTE
+	NOTICE_CREATE,
+	NOTICE_REMOVE,
 } from 'state/action-types';
 import { createReducer } from 'state/utils';
 
 export const items = createReducer( {}, {
-	[ NEW_NOTICE ]: ( state, action ) => {
+	[ NOTICE_CREATE ]: ( state, action ) => {
 		const { notice } = action;
 		return {
 			...state,
 			[ notice.noticeId ]: notice
 		};
 	},
-	[ REMOVE_NOTICE ]: ( state, action ) => {
+	[ NOTICE_REMOVE ]: ( state, action ) => {
 		const { noticeId } = action;
 		if ( ! state.hasOwnProperty( noticeId ) ) {
 			return state;
