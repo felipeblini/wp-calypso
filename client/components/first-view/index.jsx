@@ -24,14 +24,14 @@ export default React.createClass( {
 	},
 
 	componentWillReceiveProps( nextProps ) {
-		if ( ! nextProps.firstViewActive ) {
+		if ( ! nextProps.isFirstViewActive ) {
 			// Need to delay this in order to allow CSS transition to complete first
 			setTimeout( this.removeChildren, 200 );
 		}
 	},
 
 	componentDidUpdate() {
-		if ( this.props.firstViewActive ) {
+		if ( this.props.isFirstViewActive ) {
 			this.preventPageScrolling();
 		} else {
 			this.allowPageScrolling();
@@ -44,7 +44,7 @@ export default React.createClass( {
 
 	render: function() {
 		const classes = classNames( 'wp-content', 'first-view', {
-			active: this.props.firstViewActive
+			active: this.props.isFirstViewActive
 		} );
 
 		return (

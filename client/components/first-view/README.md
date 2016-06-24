@@ -8,9 +8,9 @@ Wrap your component in a `FirstViewable` JSX element.
 Place the `FirstView` JSX element anywhere -- when it is rendered, the resulting DOM nodes for the overlay will be
 appending to the `body` of the document.
 
-The `onFirstViewDismiss` property must be set, and should modify the parent's state such that the `FirstViewable`'s `firstViewActive` property will be false when `render` is called.
+The `onFirstViewDismiss` property must be set, and should modify the parent's state such that the `FirstViewable`'s `isFirstViewActive` property will be false when `render` is called.
 
-By controlling the `FirstView`'s visibility through the `firstViewActive` property, the `FirstViewable` component itself is responsible for
+By controlling the `FirstView`'s visibility through the `isFirstViewActive` property, the `FirstViewable` component itself is responsible for
 providing any CSS transitions to animate the opening/closing of the `FirstView`. This also keeps the parent's code clean and
 readable, with a minimal amount of boilerplate code required to show a `FirstView`.
 
@@ -29,7 +29,7 @@ const MyComponent = React.createClass( {
 
 	render() {
 		return (
-			<FirstViewable firstViewActive={ this.state.firstViewActive } onFirstViewDismiss={ this.dismissFirstView }>
+			<FirstViewable isFirstViewActive={ this.state.isFirstViewActive } onFirstViewDismiss={ this.dismissFirstView }>
 				<FirstView>
 					Content goes here
 				</FirstView>
@@ -39,7 +39,7 @@ const MyComponent = React.createClass( {
 
 	dismissFirstView() {
 		this.setState( {
-			firstViewActive: false
+			isFirstViewActive: false
 		} );
 	}
 } );

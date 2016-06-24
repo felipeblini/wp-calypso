@@ -7,12 +7,12 @@ import classNames from 'classnames';
 export default React.createClass( {
 	getInitialState() {
 		return {
-			firstViewActive: false
+			isFirstViewActive: false
 		};
 	},
 
 	componentDidMount() {
-		if ( this.props.firstViewActive ) {
+		if ( this.props.isFirstViewActive ) {
 			// we have to slightly delay this so that the CSS transition will show
 			process.nextTick( this.showFirstView );
 		}
@@ -20,14 +20,14 @@ export default React.createClass( {
 
 	componentWillReceiveProps( nextProps ) {
 		this.setState( {
-			firstViewActive: nextProps.firstViewActive
+			isFirstViewActive: nextProps.isFirstViewActive
 		} );
 	},
 
 	render() {
 		const children = this.cloneChildrenAndSetupFirstViewProps();
 		const classes = classNames( 'first-viewable', {
-			'first-view-active': this.state.firstViewActive
+			'first-view-active': this.state.isFirstViewActive
 		} );
 
 		return (
@@ -41,13 +41,13 @@ export default React.createClass( {
 		return React.Children.map( this.props.children, ( child ) => {
 			// TODO: Is there a way to only do this for `FirstView`-'derived' components
 			return React.cloneElement( child, {
-				firstViewActive: this.state.firstViewActive,
+				isFirstViewActive: this.state.isFirstViewActive,
 				onFirstViewDismiss: this.props.onFirstViewDismiss
 			} );
 		}, this );
 	},
 
 	showFirstView() {
-		this.setState( { firstViewActive: true } );
+		this.setState( { isFirstViewActive: true } );
 	}
 } );
