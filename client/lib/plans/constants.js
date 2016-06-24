@@ -59,6 +59,11 @@ export const plansList = {
 		]
 	},
 
+	[ PLAN_PERSONAL ]: {
+		getStoreSlug: () => PLAN_PERSONAL,
+		getPathSlug: () => 'personal'
+	},
+
 	[ PLAN_PREMIUM ]: {
 		getTitle: () => i18n.translate( 'Premium' ),
 		getPriceTitle: () => i18n.translate( '$99 per year' ),
@@ -108,12 +113,14 @@ export const plansList = {
 };
 
 const allPaidPlans = [
+	PLAN_PERSONAL,
 	PLAN_PREMIUM,
 	PLAN_BUSINESS
 ];
 
 const allPlans = [
 	PLAN_FREE,
+	PLAN_PERSONAL,
 	PLAN_PREMIUM,
 	PLAN_BUSINESS
 ];
