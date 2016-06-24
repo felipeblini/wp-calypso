@@ -51,9 +51,7 @@ export default React.createClass( {
 			<RootChild className={ classes }>
 				{ this.state.shouldRenderChildren && (
 					<div className="first-view__content">
-						<div>
-							{ this.props.children }
-						</div>
+						{ this.props.children }
 
 						<Button onClick={ this.dismiss }>Got it!</Button>
 
