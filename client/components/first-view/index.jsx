@@ -53,12 +53,12 @@ export default React.createClass( {
 					<div className="first-view__content">
 						{ this.props.children }
 
-						<Button onClick={ this.dismiss }>Got it!</Button>
+						<Button onClick={ this.dismiss }>{ this.translate( 'Got it!' ) }</Button>
 
 						<div className="first-view__hide-preference">
 							<label>
 								<input type="checkbox" checked />
-								Don't show this again
+								{ this.translate( 'Don\'t show this again' ) }
 							</label>
 						</div>
 					</div>
