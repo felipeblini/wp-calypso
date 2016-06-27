@@ -73,7 +73,7 @@ export default React.createClass( {
 		}
 
 		return (
-			<div>
+			<div className="main main-column" role="main">
 				<SidebarNavigation />
 				<StatsNavigation section="insights" site={ site } />
 				<div id="my-stats-content">
