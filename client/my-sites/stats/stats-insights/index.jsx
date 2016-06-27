@@ -19,9 +19,6 @@ import statsStrings from '../stats-strings';
 import MostPopular from 'my-sites/stats/most-popular';
 import LatestPostSummary from '../post-performance';
 import DomainTip from 'my-sites/domain-tip';
-import FirstView from '../stats-first-view';
-import FirstViewable from 'components/first-view/first-viewable';
-import config from 'config';
 
 export default React.createClass( {
 	displayName: 'StatsInsights',
@@ -40,12 +37,6 @@ export default React.createClass( {
 		] ),
 		summaryDate: PropTypes.string,
 		wpcomFollowersList: PropTypes.object
-	},
-
-	getInitialState: function() {
-		return {
-			isFirstViewActive: true
-		};
 	},
 
 	render() {
@@ -81,72 +72,51 @@ export default React.createClass( {
 							beforeNavigate={ this.updateScrollPosition } />;
 		}
 
-		const content = (
-			<div id="my-stats-content">
-				<PostingActivity />
-				<LatestPostSummary site={ site } />
-				<TodaysStats
-					siteId={ site ? site.ID : 0 }
-					period="day"
-					date={ summaryDate }
-					path={ '/stats/day' }
-					title={ this.translate( 'Today\'s Stats' ) }
-				/>
-				<AllTime allTimeList={ allTimeList } />
-				<MostPopular insightsList={ insightsList } />
-				<DomainTip siteId={ site ? site.ID : 0 } event="stats_insights_domain" />
-				<div className="stats-nonperiodic has-recent">
-					<div className="module-list">
-						<div className="module-column">
-							<Comments
-								path={ 'comments' }
-								site={ site }
-								commentsList={ commentsList }
-								followList={ followList }
-								commentFollowersList={ commentFollowersList } />
-							{ tagsList }
-						</div>
-						<div className="module-column">
-							<Followers
-								path={ 'followers' }
-								site={ site }
-								wpcomFollowersList={ wpcomFollowersList }
-								emailFollowersList={ emailFollowersList }
-								followList={ followList } />
-							<StatsModule
-								path={ 'publicize' }
-								moduleStrings={ moduleStrings.publicize }
-								site={ site }
-								dataList={ publicizeList } />
+		return (
+			<div>
+				<SidebarNavigation />
+				<StatsNavigation section="insights" site={ site } />
+				<div id="my-stats-content">
+					<PostingActivity />
+					<LatestPostSummary site={ site } />
+					<TodaysStats
+						siteId={ site ? site.ID : 0 }
+						period="day"
+						date={ summaryDate }
+						path={ '/stats/day' }
+						title={ this.translate( 'Today\'s Stats' ) }
+					/>
+					<AllTime allTimeList={ allTimeList } />
+					<MostPopular insightsList={ insightsList } />
+					<DomainTip siteId={ site ? site.ID : 0 } event="stats_insights_domain" />
+					<div className="stats-nonperiodic has-recent">
+						<div className="module-list">
+							<div className="module-column">
+								<Comments
+									path={ 'comments' }
+									site={ site }
+									commentsList={ commentsList }
+									followList={ followList }
+									commentFollowersList={ commentFollowersList } />
+								{ tagsList }
+							</div>
+							<div className="module-column">
+								<Followers
+									path={ 'followers' }
+									site={ site }
+									wpcomFollowersList={ wpcomFollowersList }
+									emailFollowersList={ emailFollowersList }
+									followList={ followList } />
+								<StatsModule
+									path={ 'publicize' }
+									moduleStrings={ moduleStrings.publicize }
+									site={ site }
+									dataList={ publicizeList } />
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		);
-
-		if ( config.isEnabled( 'stats/first-view' ) ) {
-			return (
-				<FirstViewable isFirstViewActive={ this.state.isFirstViewActive } onFirstViewDismiss={ this.dismissFirstView }>
-					<FirstView />
-					<SidebarNavigation />
-					<StatsNavigation section="insights" site={ site } />
-					{ content }
-				</FirstViewable>
-			);
-		}
-
-		return (
-			<div>
-				<SidebarNavigation />
-				<StatsNavigation section="insights" site={ site } />
-				{ content }
-			</div>
-		);
-	},
-
-	dismissFirstView() {
-		this.setState( {
-			isFirstViewActive: false
-		} );
 	}
 } );

@@ -1,7 +1,7 @@
-First View
-==========
+Enable First View
+=================
 
-A React component that provides support for showing an introductory overlay when a component is first viewed.
+A higher order React component that provides support for showing an introductory overlay when a component is first viewed.
 
 Wrap your component in a `FirstViewable` JSX element.
 

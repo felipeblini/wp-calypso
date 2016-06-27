@@ -18,20 +18,20 @@ export default React.createClass( {
 	},
 
 	componentDidMount() {
-		if ( this.props.isFirstViewActive ) {
+		if ( this.props.isActive ) {
 			this.preventPageScrolling();
 		}
 	},
 
 	componentWillReceiveProps( nextProps ) {
-		if ( ! nextProps.isFirstViewActive ) {
+		if ( ! nextProps.isActive ) {
 			// Need to delay this in order to allow CSS transition to complete first
 			setTimeout( this.removeChildren, 200 );
 		}
 	},
 
 	componentDidUpdate() {
-		if ( this.props.isFirstViewActive ) {
+		if ( this.props.isActive ) {
 			this.preventPageScrolling();
 		} else {
 			this.allowPageScrolling();
@@ -44,7 +44,7 @@ export default React.createClass( {
 
 	render: function() {
 		const classes = classNames( 'wp-content', 'first-view', {
-			'is-active': this.props.isFirstViewActive
+			'is-active': this.props.isActive
 		} );
 
 		return (
@@ -68,8 +68,8 @@ export default React.createClass( {
 	},
 
 	dismiss: function() {
-		if ( this.props.onFirstViewDismiss ) {
-			this.props.onFirstViewDismiss();
+		if ( this.props.onDismiss ) {
+			this.props.onDismiss();
 		}
 	},
 
