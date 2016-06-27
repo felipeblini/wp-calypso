@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import find from 'lodash/find';
-import get from 'lodash/get';
 import identity from 'lodash/identity';
+import isString from 'lodash/isString';
+import isUndefined from 'lodash/isUndefined';
 import map from 'lodash/map';
 import { connect } from 'react-redux';
 
@@ -10,11 +10,9 @@ import TokenField from 'components/token-field';
 import { localize } from 'i18n-calypso';
 
 import {
-	rawToNative,
-	nativePlaceholder,
 	nativeToRaw,
-	nativeToTokens,
-	tokensToNative
+	rawToNative,
+	removeBlanks
 } from './mappings';
 
 const titleTypes = translate => [
@@ -34,6 +32,7 @@ const validTokens = translate => ( {
 	date: translate( 'Date' )
 } );
 
+// for future use in this feature
 const tokenMap = {
 	frontPage: [ 'siteName', 'tagline' ],
 	posts: [ 'siteName', 'tagline', 'postTitle' ],
@@ -42,10 +41,19 @@ const tokenMap = {
 	archives: [ 'siteName', 'tagline', 'date' ]
 };
 
-const displayTokens = translate => s => {
-	const display = find( validTokens( translate ), s ) || s;
+const tokenize = translate => s => {
+	if ( ! isString( s ) ) { return s }
 
-	return display;
+	// find token key from translated label
+	const tokens = validTokens( translate );
+	const type = Object
+		.keys( tokens )
+		.filter( k => tokens[ k ] === s )
+		.shift();
+
+	return isUndefined( type )
+		? { type: 'string', isBorderless: true, value: s }
+		: { type: type, value: s };
 };
 
 export class MetaTitleEditor extends Component {
@@ -54,7 +62,7 @@ export class MetaTitleEditor extends Component {
 
 		this.state = {
 			type: 'frontPage',
-			tokens: []
+			tokens: rawToNative( '%site_name% | %tagline%' )
 		};
 
 		this.switchType = this.switchType.bind( this );
@@ -65,28 +73,14 @@ export class MetaTitleEditor extends Component {
 		this.setState( { type } );
 	}
 
-	update( rawValues ) {
-		const { saveMetaTitle } = this.props;
+	update( values ) {
+		const { saveMetaTitle, translate } = this.props;
 		const { type } = this.state;
 
-		const r2n = rawToNative;
-		const n2r = nativeToRaw;
-		const n2t = nativeToTokens;
-		const t2n = tokensToNative;
+		const tokens = removeBlanks( map( values, tokenize( translate ) ) );
 
-		const ts = validTokens( identity );
-		console.log( ts );
-		rawValues.forEach( v => {
-			console.log( v );
-
-			map( ts, (k, s) => {
-				if ( s !== v ) { return; }
-
-				console.log( `key found at ${ k }` );
-			} );
-		} );
-
-		//this.setState( { tokens } );
+		saveMetaTitle( type, nativeToRaw( tokens ) );
+		this.setState( { tokens } );
 	}
 
 	render() {
@@ -95,22 +89,27 @@ export class MetaTitleEditor extends Component {
 			translate = identity
 		} = this.props;
 		const {
-			type,
 			tokens
 		} = this.state;
+
+		const values = tokens.map(
+			token => 'string' !== token.type
+				? { ...token, value: validTokens( translate )[ token.type ] }
+				: { ...token, isBorderless: true }
+		);
 
 		return (
 			<div>
 				<SegmentedControl options={ titleTypes( translate ) } onSelect={ this.switchType } />
 				<TokenField
 					disabled={ disabled }
-					displayTransform={ displayTokens( translate ) }
 					onChange={ this.update }
+					saveTransform={ identity } // don't trim whitespace
 					suggestions={ [
 						translate( 'Site Name' ),
 						translate( 'Post Title' )
 					] }
-					value={ nativeToTokens( rawToNative( '%site_name% | %post_title%' ) ) }
+					value={ values }
 				/>
 			</div>
 		);
@@ -132,7 +131,7 @@ const mapStateToProps = state => ( {
 } );
 
 const mapDispatchToProps = dispatch => ( {
-	saveMetaTitle: title => console.log( { type: 'SEO_SET_META_TITLE', title } )
+	saveMetaTitle: ( contentType, title ) => console.log( { type: 'SEO_SET_META_TITLE', contentType, title } )
 } );
 
 export default connect( mapStateToProps, mapDispatchToProps )( localize( MetaTitleEditor ) );

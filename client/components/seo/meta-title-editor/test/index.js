@@ -2,9 +2,7 @@ import { expect } from 'chai';
 
 import {
 	nativeToRaw,
-	nativeToTokens,
-	rawToNative,
-	tokensToNative
+	rawToNative
 } from '../mappings';
 
 describe( 'SEO', () => {
@@ -16,11 +14,19 @@ describe( 'SEO', () => {
 				).to.equal( '' ) );
 
 				it( 'should produce plain-text strings', () => expect(
-					nativeToRaw( [ 'just', ' a ', 'string' ] )
+					nativeToRaw( [
+						{ type: 'string', value: 'just' },
+						{ type: 'string', value: ' a ' },
+						{ type: 'string', value: 'string' }
+					] )
 				).to.equal( 'just a string' ) );
 
 				it( 'should produce placeholders', () => expect(
-					nativeToRaw( [ { type: 'siteName' }, ' | ', { type: 'postTitle' } ] )
+					nativeToRaw( [
+						{ type: 'siteName' },
+						{ type: 'string', value: ' | ' },
+						{ type: 'postTitle' }
+					] )
 				).to.equal( '%site_name% | %post_title%' ) );
 			} );
 
@@ -31,61 +37,13 @@ describe( 'SEO', () => {
 
 				it( 'should handle plain strings', () => expect(
 					rawToNative( 'just a string' )
-				).to.eql( [ 'just a string' ] ) );
+				).to.eql( [ { type: 'string', value: 'just a string' } ] ) );
 
 				it( 'should handle placeholders', () => expect(
 					rawToNative( '%site_name% | %post_title%' )
-				).to.eql( [ { type: 'siteName' }, ' | ', { type: 'postTitle' } ] ) );
-			} );
-
-			describe( '#nativeToTokens', () => {
-				it( 'should handle empty formats', () => expect(
-					nativeToTokens( [] )
-				).to.eql( [] ) );
-
-				it( 'should handle plain strings', () => expect(
-					nativeToTokens( [ 'just', ' a ', 'string' ] )
-				).to.eql( [
-					{ value: 'just', isBorderless: true },
-					{ value: ' a ', isBorderless: true },
-					{ value: 'string', isBorderless: true }
-				] ) );
-
-				it( 'should handle placeholders', () => expect(
-					nativeToTokens( [
-						{ type: 'siteName' },
-						' | ',
-						{ type: 'postTitle' }
-					] )
-				).to.eql( [
-					'%site_name%',
-					{ value: ' | ', isBorderless: true },
-					'%post_title%'
-				] ) );
-			} );
-
-			describe( '#tokensToNative', () => {
-				it( 'should handle empty formats', () => expect(
-					tokensToNative( [] )
-				).to.eql( [] ) );
-
-				it( 'should handle plain strings', () => expect(
-					tokensToNative( [
-						{ value: 'just', isBorderless: true },
-						{ value: ' a ', isBorderless: true },
-						{ value: 'string', isBorderless: true }
-					] )
-				).to.eql( [ 'just', ' a ', 'string' ] ) );
-
-				it( 'should handle placeholders', () => expect(
-					tokensToNative( [
-						'%site_name%',
-						{ value: ' | ', isBorderless: true },
-						'%post_title%'
-					] )
 				).to.eql( [
 					{ type: 'siteName' },
-					' | ',
+					{ type: 'string', value: ' | ' },
 					{ type: 'postTitle' }
 				] ) );
 			} );

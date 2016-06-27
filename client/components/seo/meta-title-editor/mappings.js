@@ -3,37 +3,39 @@
 // raw is a string like: '%site_name% | %tagline%'
 //                        \_________/   \_______/
 //                             |            |
-//                             \------------\- placeholders
+//                             \------------\- tokens
 //
-// native is an array of plain-text strings and tags
+// native is an array of plain-text strings and tokens
 //   [ { type: 'postTitle' }, ' on ', { type: 'siteName' } ]
 //     \___________________/          \__________________/
 //               |                     |
-//               \---------------------\------ tags
+//               \---------------------\------ tokens
 //
-// tokens is an array of "tokens" expected by `TokenField`
 //   @see README for `TokenField`
-//   [ '%site_name%', { value: ' | ', isBorderless: true }, '%post_title%' ]
+//   [
+//   	{ value: 'Site Name', type: 'siteName' },
+//   	{ value: ' | ', type: 'string' },
+//   	{ value: 'Post Title', type: 'postTitle' }
+//   ]
 //
 
 import camelCase from 'lodash/camelCase';
-import compact from 'lodash/compact';
-import isString from 'lodash/isString';
 import join from 'lodash/join';
 import map from 'lodash/map';
 import snakeCase from 'lodash/snakeCase';
 import split from 'lodash/split';
 
+export const removeBlanks = l => l.filter( ( { value } ) => '' !== value );
+
 const placeholderPattern = /(%[a-zA-Z_]+%)/;
 const isPlaceholder = s => placeholderPattern.test( s );
-const placeholderToTag = p => isPlaceholder( p ) ? ( { type: camelCase( p.slice( 1, -1 ) ) } ) : p;
 
-const tagToPlaceholder = n => isString( n ) ? n : `%${ snakeCase( n.type ) }%`;
-const tagToToken = n => isString( n ) ? { value: n, isBorderless: true } : tagToPlaceholder( n );
+const placeholderToTag = p =>
+	isPlaceholder( p )
+		? { type: camelCase( p.slice( 1, -1 ) ) }
+		: { value: p, type: 'string' };
 
-const tokenToTag = t => isString( t ) ? placeholderToTag( t ) : t.value;
+const tagToPlaceholder = n => 'string' === n.type ? n.value : `%${ snakeCase( n.type ) }%`;
 
-export const rawToNative = r => compact( map( split( r, placeholderPattern ), placeholderToTag ) );
+export const rawToNative = r => removeBlanks( map( split( r, placeholderPattern ), placeholderToTag ) );
 export const nativeToRaw = n => join( map( n, tagToPlaceholder ), '' );
-export const nativeToTokens = n => compact( map( n, tagToToken ) );
-export const tokensToNative = t => compact( map( t, tokenToTag ) );
