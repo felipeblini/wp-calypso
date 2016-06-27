@@ -6,10 +6,10 @@
 //                             \------------\- tokens
 //
 // native is an array of plain-text strings and tokens
-//   [ { type: 'postTitle' }, ' on ', { type: 'siteName' } ]
-//     \___________________/          \__________________/
-//               |                     |
-//               \---------------------\------ tokens
+//   [ { type: 'postTitle' }, { type: 'string', value: ' on ' }, { type: 'siteName' } ]
+//     \___________________/                                     \__________________/
+//               |                                                  |
+//               \--------------------------------------------------\--- tokens
 //
 //   @see README for `TokenField`
 //   [

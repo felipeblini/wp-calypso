@@ -285,7 +285,7 @@ export const SeoForm = React.createClass( {
 					<form onChange={ this.markChanged } className="seo-form">
 						<FormFieldset>
 							<FormFieldset className="has-divider">
-								<FormLabel htmlFor="seo_title">{ this.translate( 'Title Format' ) }</FormLabel>
+								<FormLabel htmlFor="seo_title">{ this.translate( 'Meta Title Format' ) }</FormLabel>
 								<MetaTitleEditor />
 								<FormSettingExplanation>
 									{ this.translate( 'Control how the title for your site will be generated when sharing' ) }
