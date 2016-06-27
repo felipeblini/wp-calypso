@@ -6,7 +6,7 @@
 .design-type__choice {
 	padding: 0;
 	margin: 0 10px 20px 10px;
-	width: 230px;
+	width: 320px;
 	flex-grow: 1;
 	transition: all 100ms ease-in-out;
 
@@ -23,12 +23,5 @@
 
 	&:hover {
 		box-shadow: 0 0 0 1px $gray, 0 2px 4px lighten( $gray, 20 );
-	}
-
-	&.is-spacergif {
-		height: 0;
-		width: 230px;
-		margin: 0 10px;
-		padding: 0;
 	}
 }
