@@ -11,8 +11,6 @@ import _debug from 'debug';
  * Internal dependencies
  */
 import { getSelectedSiteId } from 'state/ui/selectors';
-import { getEditorPostId } from 'state/ui/editor/selectors';
-import { getEditedPost } from 'state/posts/selectors';
 import { getTerms } from 'state/terms/selectors';
 import TokenField from 'components/token-field';
 import TermsConstants from 'lib/terms/constants';
