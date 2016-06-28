@@ -63,9 +63,7 @@ class TermTokenField extends React.Component {
 	}
 
 	render() {
-		var termNames = ( this.props.terms || [] ).map( function( term ) {
-			return term.name;
-		} );
+		const termNames = ( this.props.terms || [] ).map( term => term.name );
 
 		return (
 			<label className="editor-drawer__label">
