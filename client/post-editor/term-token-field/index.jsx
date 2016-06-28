@@ -63,6 +63,12 @@ class TermTokenField extends React.Component {
 	render() {
 		const termNames = ( this.props.terms || [] ).map( term => term.name );
 
+		const query = {
+			number: 1000,
+			order_by: 'count',
+			order: 'DESC'
+		};
+
 		return (
 			<label className="editor-drawer__label">
 				<span className="editor-drawer__label-text">
@@ -71,6 +77,7 @@ class TermTokenField extends React.Component {
 				<QueryTerms
 					siteId={ this.props.siteId }
 					taxonomy={ this.props.taxonomyName }
+					query={ query }
 				/>
 				<TokenField
 					value={ this.getPostTerms() }
