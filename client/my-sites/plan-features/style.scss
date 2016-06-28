@@ -81,6 +81,10 @@ $plan-features-header-banner-height: 20px;
 	}
 }
 
+.plan-features__header-timeframe.is-discount {
+	color: $alert-green;
+}
+
 .plan-features__header-title {
 	font-size: 18px;
 	color: $blue-wordpress;
@@ -89,6 +93,22 @@ $plan-features-header-banner-height: 20px;
 .plan-features__price {
 	margin: 8px 0;
 	font-size: 24px;
+	color: $gray-dark;
+}
+
+.plan-features__price.is-original {
+	text-decoration: line-through;
+	color: $gray;
+}
+
+.plan-features__price.is-discount {
+	color: $alert-green;
+}
+
+.plan-features__price.is-discount,
+.plan-features__price.is-original {
+	align-items: stretch;
+	margin-right: 8px;
 }
 
 .plan-features__price-currency-symbol,
@@ -97,13 +117,17 @@ $plan-features-header-banner-height: 20px;
 	font-size: 12px;
 }
 
-.plan-features__price-currency-symbol {
-	color: $gray;
+.plan-features__header-price-group {
+	display: flex;
+	flex-flow: row wrap;
 }
 
-.plan-features__price-integer,
-.plan-features__price-fraction {
-	color: $gray-dark;
+.plan-features__price.is-discount .plan-features__price-currency-symbol {
+	color: $alert-green;
+}
+
+.plan-features__price-currency-symbol {
+	color: $gray;
 }
 
 .plan-features__price-integer {

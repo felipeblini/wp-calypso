@@ -18,6 +18,8 @@ import { isCurrentSitePlan } from 'state/sites/selectors';
 import { getSelectedSiteId } from 'state/ui/selectors';
 import { getCurrentUserCurrencyCode } from 'state/current-user/selectors';
 import { getPlanRawPrice, getPlan } from 'state/plans/selectors';
+import { getPlanDiscountPrice } from 'state/sites/plans/selectors';
+
 import {
 	plansList,
 	getPlanFeaturesObject,
@@ -35,6 +37,7 @@ class PlanFeatures extends Component {
 			currencyCode,
 			planName,
 			rawPrice,
+			discountPrice,
 			popular,
 			current,
 			planConstantObj,
@@ -55,6 +58,7 @@ class PlanFeatures extends Component {
 					title={ planConstantObj.getTitle() }
 					planType={ planName }
 					rawPrice={ rawPrice }
+					discountPrice={ discountPrice }
 					billingTimeFrame={ planConstantObj.getBillingTimeFrame() }
 					onClick={ onUpgradeClick }
 				/>
@@ -96,6 +100,7 @@ export default connect( ( state, ownProps ) => {
 	const planProductId = plansList[ ownProps.plan ].getProductId();
 	const selectedSiteId = getSelectedSiteId( state );
 	const planObject = getPlan( state, planProductId );
+	const showMonthly = ! isMonthly( ownProps.plan );
 
 	return {
 		planName: ownProps.plan,
@@ -103,9 +108,10 @@ export default connect( ( state, ownProps ) => {
 		currencyCode: getCurrentUserCurrencyCode( state ),
 		popular: isPopular( ownProps.plan ),
 		features: getPlanFeaturesObject( ownProps.plan ),
-		rawPrice: getPlanRawPrice( state, planProductId, ! isMonthly( ownProps.plan ) ),
+		rawPrice: getPlanRawPrice( state, planProductId, showMonthly ),
 		planConstantObj: plansList[ ownProps.plan ],
-		planObject: planObject
+		planObject: planObject,
+		discountPrice: getPlanDiscountPrice( state, selectedSiteId, ownProps.plan, showMonthly )
 	};
 } )( PlanFeatures );
 
